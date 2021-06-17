@@ -1,12 +1,7 @@
 (function ($) {
-	let account = localStorage.getItem("account") || "";
-	let chainId = localStorage.getItem("chainId") || null;
-	const canConnect = typeof window.ethereum !== "undefined";
-
 	let presaleId = new URLSearchParams(window.location.search).get("presaleId");
 
 	if (presaleId) {
-		loadPresaleData(presaleId);
 		$("#presaleId").val(presaleId);
 	}
 
@@ -58,30 +53,6 @@
 		$("#wallets").children().last().remove();
 	})
 
-	async function loadPresaleData(presaleId) {
-		try {
-			const web3 = new window.Web3(window.ethereum);
-
-			const presaleContract = new web3.eth.Contract(presaleABI, presaleContractAddress);
-
-			const details = await presaleContract.methods.passwordP(presaleId).call();
-
-			console.log(details);
-
-			const pre = new web3.eth.Contract(presaleABI1, presaleContractAddress1);
-			const pool = await pre.methods.pools(presaleId).call();
-			console.log(pool);
-		} catch (err) {
-			console.log(err);
-			$("#presale-data").html("<h4 class='text-danger'>Failed to load</h4>")
-		}
-	}
-
-	$("#loadBtn").click(() => {
-		presaleId = $("#presaleId").val();
-		loadPresaleData(presaleId);
-	});
-
 	async function purchase() {
 		try {
 			const web3 = new window.Web3(window.ethereum);
@@ -96,9 +67,10 @@
 				const nonce = parseInt(await web3.eth.getTransactionCount(address));
 				const gasPrice = web3.utils.toWei($(wallet).find(".gwei").val(), "gwei");
 				const gas = $(wallet).find(".limit").val();
-				console.log(address, privateKey, contribution, wei, nonce);
+				
+				console.log(address, privateKey, contribution, wei, nonce, gasPrice, gas);
 
-				let txBuilder = presaleContract.methods.bid(presaleId, wei, "");
+				let txBuilder = presaleContract.methods.bid(presaleId, wei, 0);
 				let encoded = txBuilder.encodeABI();
 				let transaction = {
 					nonce: web3.utils.toHex(nonce),
@@ -110,7 +82,9 @@
 					value: wei
 				};
 
-				await web3.eth.accounts.signTransaction(transaction, privateKey, function(error, signature) {
+				console.log(transaction);
+
+				web3.eth.accounts.signTransaction(transaction, privateKey, function(error, signature) {
 					if (error) {
 						console.log(error);
 					} else {
@@ -121,6 +95,7 @@
 				});
 			});
 		} catch (err) {
+			console.log(err);
 			alert("An error occurred somewhere lol.");
 		}
 	}

@@ -23,7 +23,108 @@ const basicABI = [{
 }];
 
 const presaleContractAddress = "0xc18692D031281277cE17320Fc72A7ebD1DA86784";
+const bidContractAddress = "0x4Fc4bFeDc5c82644514fACF716C7F888a0C73cCc";
 const presaleContractAddress1 = "0x4B12cB452D56391C931B5442C4Ebbe7A58cA41C7";
+
+const bidContractABI = [{
+    "constant": false,
+    "inputs": [{
+        "name": "newImplementation",
+        "type": "address"
+    }],
+    "name": "upgradeTo",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+}, {
+    "constant": false,
+    "inputs": [{
+        "name": "newImplementation",
+        "type": "address"
+    }, {
+        "name": "data",
+        "type": "bytes"
+    }],
+    "name": "upgradeToAndCall",
+    "outputs": [],
+    "payable": true,
+    "stateMutability": "payable",
+    "type": "function"
+}, {
+    "constant": false,
+    "inputs": [],
+    "name": "implementation",
+    "outputs": [{
+        "name": "",
+        "type": "address"
+    }],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+}, {
+    "constant": false,
+    "inputs": [{
+        "name": "newAdmin",
+        "type": "address"
+    }],
+    "name": "changeAdmin",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+}, {
+    "constant": false,
+    "inputs": [],
+    "name": "admin",
+    "outputs": [{
+        "name": "",
+        "type": "address"
+    }],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+}, {
+    "inputs": [{
+        "name": "_logic",
+        "type": "address"
+    }, {
+        "name": "_admin",
+        "type": "address"
+    }, {
+        "name": "_data",
+        "type": "bytes"
+    }],
+    "payable": true,
+    "stateMutability": "payable",
+    "type": "constructor"
+}, {
+    "payable": true,
+    "stateMutability": "payable",
+    "type": "fallback"
+}, {
+    "anonymous": false,
+    "inputs": [{
+        "indexed": false,
+        "name": "previousAdmin",
+        "type": "address"
+    }, {
+        "indexed": false,
+        "name": "newAdmin",
+        "type": "address"
+    }],
+    "name": "AdminChanged",
+    "type": "event"
+}, {
+    "anonymous": false,
+    "inputs": [{
+        "indexed": true,
+        "name": "implementation",
+        "type": "address"
+    }],
+    "name": "Upgraded",
+    "type": "event"
+}];
 
 var addresses = ["0x5bEaBAEBB3146685Dd74176f68a0721F91297D37",
     "0x98945BC69A554F8b129b09aC8AfDc2cc2431c48E",
