@@ -63,7 +63,7 @@
 			let sales = await contract.methods.numberOfFixedSaleBuys().call();
 			$("#whitelistsales").text(sales);
 			let salestart = await contract.methods.fixedSaleStartTimestamp().call();
-			$("#salestart").text(new Date(parseInt(salestart) * 1000).toLocaleString());
+			$("#salestart").text(new Date(parseInt(salestart) * 1000).toLocaleString() + " (" + (new Date(parseInt(salestart) * 1000) - new Date()) / 1000 / 60 + " minutes)");
 			let saleduration = await contract.methods.fixedSaleEarlyParticipantDuration().call();
 			$("#saleduration").text(parseInt(saleduration) / 60 + " minutes");
 			let publicstart = new Date((parseInt(salestart) + parseInt(saleduration)) * 1000) - new Date();
