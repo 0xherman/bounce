@@ -56,7 +56,6 @@
 	async function purchase() {
 		try {
 			const web3 = new window.Web3(window.ethereum);
-			const presaleContract = new web3.eth.Contract(presaleABI, presaleContractAddress);
 			presaleId = $("#presaleId").val();
 
 			$(".wallet").each(async function(index, wallet) {
@@ -70,13 +69,13 @@
 				
 				console.log(address, privateKey, contribution, wei, nonce, gasPrice, gas);
 
-				let txBuilder = presaleContract.methods.bid(presaleId, wei, 0);
-				let encoded = txBuilder.encodeABI();
+				// ugh
+				const encoded = "0xaed35147" + web3.eth.abi.encodeParameters(["uint256", "uint256", "uint256"], [presaleId, wei, 0]).slice(2);
 				let transaction = {
 					nonce: web3.utils.toHex(nonce),
 					data: encoded,
 					from: address,
-					to: presaleContractAddress,
+					to: bidContractAddress,
 					gas: gas,
 					gasPrice: gasPrice,
 					value: wei
