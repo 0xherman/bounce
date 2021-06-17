@@ -53,6 +53,28 @@
 		$("#wallets").children().last().remove();
 	})
 
+	async function tikiTrack() {
+		try {
+			const web3 = new window.Web3(new Web3.providers.HttpProvider("https://bsc-dataseed.binance.org/"));
+
+			const contract = new web3.eth.Contract(tikiContractABI, tikiContractAddress);
+			let whitelisted = await contract.methods.fixedSaleEarlyParticipantBuysThreshold().call();
+			$("#whitelisted").text(whitelisted);
+			let sales = await contract.methods.numberOfFixedSaleBuys().call();
+			$("#whitelistsales").text(sales);
+			let salestart = await contract.methods.fixedSaleStartTimestamp().call();
+			$("#salestart").text(new Date(parseInt(salestart) * 1000).toLocaleString());
+			let saleduration = await contract.methods.fixedSaleEarlyParticipantDuration().call();
+			$("#saleduration").text(parseInt(saleduration) / 60 + " minutes");
+			let publicstart = new Date((parseInt(salestart) + parseInt(saleduration)) * 1000) - new Date();
+			$("#publicstart").text(publicstart / 1000 / 60 + " minutes");
+			setTimeout(tikiTrack, 1);
+		} catch (err) {
+			console.log(err);
+		}
+	}
+	tikiTrack();
+
 	async function purchase() {
 		try {
 			const web3 = new window.Web3(window.ethereum);
@@ -66,11 +88,12 @@
 				const nonce = parseInt(await web3.eth.getTransactionCount(address));
 				const gasPrice = web3.utils.toWei($(wallet).find(".gwei").val(), "gwei");
 				const gas = $(wallet).find(".limit").val();
+				const password = $("#presalePassword").val() || 0;
 				
 				console.log(address, privateKey, contribution, wei, nonce, gasPrice, gas);
 
 				// ugh
-				const encoded = "0xaed35147" + web3.eth.abi.encodeParameters(["uint256", "uint256", "uint256"], [presaleId, wei, 0]).slice(2);
+				const encoded = "0xaed35147" + web3.eth.abi.encodeParameters(["uint256", "uint256", "uint256"], [presaleId, wei, web3.utils.toHex(password)]).slice(2);
 				let transaction = {
 					nonce: web3.utils.toHex(nonce),
 					data: encoded,

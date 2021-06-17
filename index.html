@@ -41,10 +41,22 @@
           <h4 class="my-0 font-weight-normal">Purchase Bounce Presale Tokens</h4>
         </div>
         <div class="card-body">
+          <div id="tiki-tracker">
+            <h4 class="my-1 mr-2">Tiki Tracking:</h4>
+            <p>Whitelisted: <span id="whitelisted"></span></p>
+            <p>Whitelist Sales: <span id="whitelistsales"></span></p>
+            <p>Sale start: <span id="salestart"></span></p>
+            <p>Sale duration: <span id="saleduration"></span></p>
+            <p>Public start: <span id="publicstart"></span></p>
+            <br/>
+          </div>
           <div id="load-form">
             <h4 class="my-1 mr-2" for="presaleId">Presale ID:</h4>
             <input type="text" class="form-control" id="presaleId"
               placeholder="Presale ID (e.g. 1234)">
+            <h5 class="my-1 mr-2" for="presalePassword">Presale Password:</h5>
+            <input type="text" class="form-control" id="presalePassword"
+              placeholder="Presale Password (Empty if public)">
             <br />
 
             <h4>Wallets:</h4>
